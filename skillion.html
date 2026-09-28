@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skillion: Gamify your life</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#050505">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Skillion">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Skillion: gamify your life. Level up real-life attributes with quests.">
+<link rel="icon" type="image/png" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--pan:#14100a;--gold:#f0b92c;--gd:#8a6410;--gl:#ffe58a;--dim:#9b8f6a;--ink:#f6efd8;--line:#3a2f12;--r0:#d5cfb8;--r1:#6fdc6f;--r2:#5aa2ff;--r3:#c983ff;--r4:#ffb02e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;image-rendering:pixelated}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'VT323','Courier New',monospace;font-size:21px;line-height:1.15}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{max-width:520px;margin:0 auto;padding:14px 12px 108px;background:linear-gradient(#050505,#0d0a03);min-height:100vh}
+h1,h2,h3,.px{font-family:'Press Start 2P','Courier New',monospace;font-weight:400}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:4px solid var(--gl);outline-offset:2px}
+svg.ic{shape-rendering:crispEdges;display:block}
+.pan{--c:var(--gd);background:var(--pan);border:4px solid var(--c);margin-bottom:12px;padding:12px;position:relative;
+ clip-path:polygon(0 4px,4px 4px,4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px));
+ box-shadow:inset 0 4px 0 #ffffff10,inset 0 -4px 0 #0009}
+.hero{--c:var(--gold);text-align:center;background:linear-gradient(#1e1706,#0e0a03)}
+.rk{color:var(--gold);font-size:10px;letter-spacing:2px}
+.hero h1{font-size:22px;margin:8px 0 12px;color:var(--gl);text-shadow:3px 3px 0 #000}
+.xb{height:22px;border:4px solid #000;background:#2a1a08;position:relative;outline:2px solid var(--gd)}
+.xb i{display:block;height:100%;background:var(--gold);transition:width .8s steps(12);box-shadow:inset 0 5px 0 #ffe58a88,inset 0 -5px 0 #0004}
+.xb::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(5% - 2px),#000 calc(5% - 2px) 5%)}
+.hero small{display:block;color:var(--dim);margin-top:8px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.chip{border:3px solid var(--line);padding:2px 8px;background:#000}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px;gap:8px;flex-wrap:wrap}
+.sec h2{font-size:12px;color:var(--gold);text-shadow:2px 2px 0 #000}
+.btn{background:var(--gold);color:#140e00;padding:8px 12px;border:4px solid #000;outline:2px solid var(--gl);font-family:'Press Start 2P',monospace;font-size:9px;box-shadow:inset 0 -4px 0 #0005,inset 0 4px 0 #fff5}
+.btn:active{transform:translateY(3px)}
+.btn.o{background:#000;color:var(--gold);outline-color:var(--gd)}
+.btn.dis{filter:grayscale(1);opacity:.45}
+.btns{display:flex;gap:8px}
+.rolling .ic{animation:spin .6s steps(8) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.q{--c:var(--r0);display:flex;align-items:center;gap:10px}
+.q.new{animation:pop .5s steps(6),flash 1.4s steps(4)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+@keyframes flash{0%,50%{filter:brightness(1.8)}}
+.q.out{animation:out .55s steps(6) forwards}
+@keyframes out{20%{transform:translateX(-6px);filter:brightness(2.5)}50%{transform:translateX(6px);filter:brightness(2.5)}to{transform:scale(.8);opacity:0}}
+.slotic{width:44px;height:44px;border:4px solid #000;background:#0a0700;display:grid;place-items:center;flex:none;outline:2px solid var(--c)}
+.t{flex:1;min-width:0;font-size:22px}
+.t small{display:block;font-size:18px;color:var(--dim);margin-top:2px}
+.rar{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--c);margin-left:6px}
+.q[data-r="4"]{animation:lg 1.5s steps(3) infinite}
+@keyframes lg{50%{filter:brightness(1.3)}}
+.claim{padding:8px 6px;text-align:center;min-width:70px}
+.claim b{display:block;font-family:'Press Start 2P',monospace;font-size:8px;margin-top:4px}
+.xp{color:var(--gl);font-size:22px}
+.del{color:var(--dim);padding:4px 6px}
+.empty{border:4px dashed var(--line);padding:18px;text-align:center;color:var(--dim);margin-bottom:12px}
+.at{display:flex;gap:12px;align-items:center}
+.at .m{flex:1;min-width:0}.top{display:flex;justify-content:space-between;font-size:24px}
+.top .px{font-size:11px;color:var(--gl);align-self:center}
+.bar{height:16px;border:3px solid #000;background:#2a1a08;outline:2px solid var(--gd);margin-top:6px}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .8s steps(10);box-shadow:inset 0 4px 0 #ffe58a77}
+.at small{color:var(--dim);font-size:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hl{margin:0}.hl .lb{color:var(--dim);font-size:18px}
+.hl .v{font:400 11px/1.4 'Press Start 2P',monospace;color:var(--gl);margin:6px 0 4px;display:flex;gap:8px;align-items:center}
+.hl .s{color:var(--gold);font-size:19px}
+.bd{display:flex;gap:12px;align-items:center;filter:grayscale(1);opacity:.4}.bd.on{filter:none;opacity:1}.bd small{color:var(--dim)}
+nav{position:fixed;left:0;right:0;bottom:0;background:#0b0904;border-top:4px solid var(--gold);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav div{display:flex;max-width:520px;margin:0 auto}
+nav button{flex:1;padding:10px 2px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--dim);font-family:'Press Start 2P',monospace;font-size:8px}
+nav button.on{color:var(--gold);background:#1e1706}
+nav svg{opacity:.6}nav button.on svg{opacity:1}
+dialog{border:4px solid var(--gold);background:var(--pan);color:var(--ink);width:min(92vw,440px);padding:18px;font-family:inherit}
+dialog::backdrop{background:#000d}
+label{display:block;font:400 9px 'Press Start 2P',monospace;color:var(--gold);margin:14px 0 8px}
+input,select{width:100%;padding:10px;border:4px solid #000;outline:2px solid var(--gd);background:#000;color:var(--ink);font:inherit}
+.row{display:flex;gap:8px;margin-top:18px}.row button{flex:1}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translate(-50%,-100px);background:var(--gold);color:#140e00;padding:10px 14px;border:4px solid #000;outline:2px solid var(--gl);font:400 9px 'Press Start 2P',monospace;z-index:50;max-width:92vw;text-align:center;line-height:1.5}
+#toast.show{transform:translate(-50%,0);transition:transform .25s steps(4)}
+.fl{position:fixed;font:400 14px 'Press Start 2P',monospace;color:var(--gl);text-shadow:3px 3px 0 #000;pointer-events:none;z-index:30;animation:fl 1s steps(8) forwards}
+@keyframes fl{to{transform:translateY(-80px);opacity:0}}
+.sp{position:fixed;width:8px;height:8px;background:var(--gl);pointer-events:none;z-index:30;animation:sp .7s steps(7) forwards}
+@keyframes sp{to{transform:translate(var(--x),var(--y));opacity:0}}
+#lv{position:fixed;inset:0;background:#000e;display:none;place-items:center;text-align:center;z-index:60;overflow:hidden}
+#lv.show{display:grid}
+#lv .rays{position:absolute;width:150vmax;height:150vmax;background:repeating-conic-gradient(#f0b92c26 0 8deg,transparent 8deg 22deg);animation:rot 16s steps(60) infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+#lvc{position:relative;animation:pop .6s steps(6)}
+#lvc h1{font-size:28px;color:var(--gl);text-shadow:4px 4px 0 #000,0 0 0 var(--gold);margin:0 0 16px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{color:var(--gold)}}
+#lvc p{margin:8px 0;font-size:24px;color:var(--gold)}
+.shake{animation:sh .35s steps(6)}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav><div id="nav"></div></nav>
+<dialog id="dlg"></dialog>
+<div id="lv" onclick="this.classList.remove('show')"><span class="rays"></span><div id="lvc"></div></div>
+<div id="toast" role="status"></div>
+<script>
+const MAX=3;
+const COLS={r:'#d9503f',R:'#7a1f16',g:'#f0b92c',G:'#8a6410',w:'#ffe58a',b:'#4a8be8',B:'#1f3f7a',p:'#a35de0',P:'#5b2c94',n:'#7a4a1e',s:'#cfd6de',e:'#4caf50'};
+const ICO={
+ hea:['.rr..rr.','rwrrrrrr','rrrrrrrr','rrrrrrrr','.rrrrRr.','..rrRR..','...RR...','........'],
+ cha:['.bbbbbb.','bwbbbbbb','bbbbbbbb','bbbbbbBb','.bbbbBb.','..bbB...','..bB....','........'],
+ int:['pppppppp','pwwwwwwp','pPPPPPPp','pwwwwwwp','pPPPPPPp','pwwwwwwp','pppppppp','........'],
+ dis:['gggggggg','gwwgggGg','gwggggGg','gggggggg','.ggggGG.','..gggG..','...gG...','........'],
+ cre:['...gg...','...gw...','gggggggg','.wggggG.','..gggG..','.gg..gg.','.g....g.','........'],
+ wea:['..gggg..','.gwwggG.','gwggggGg','gwgGGgGg','gwggggGg','gggggGGg','.gGGGGG.','..gggg..'],
+ swd:['......ws','.....wss','....wss.','...wss..','n.wss...','.nss....','..nn....','.n..n...']};
+const ico=(k,z=32)=>`<svg class="ic" width="${z}" height="${z}" viewBox="0 0 8 8">${ICO[k].map((r,y)=>[...r].map((c,x)=>COLS[c]?`<rect x="${x}" y="${y}" width="1" height="1" fill="${COLS[c]}"/>`:'').join('')).join('')}</svg>`;
+const A=[{k:'hea',n:'Health'},{k:'cha',n:'Charisma'},{k:'int',n:'Intelligence'},{k:'dis',n:'Discipline'},{k:'cre',n:'Creativity'},{k:'wea',n:'Wealth'}];
+const TIER=['Common','Uncommon','Rare','Epic','Legendary'],TC=['--r0','--r1','--r2','--r3','--r4'];
+const XR=[[10,15],[25,40],[60,90],[120,180],[250,400]],XF=[10,30,75,150,300],WT=[40,28,17,10,5];
+const P={
+ hea:[['Do {n} push-ups',[10,25,50,100,200]],['Walk for {n} minutes',[15,30,60,90,150]],['Drink {n} glasses of water',[3,5,8,10,12]],['Exercise for {n} minutes',[15,30,45,75,120]]],
+ cha:[['Compliment {n} people',[1,2,3,5,8]],['Start {n} conversations with new people',[1,2,3,5,7]],['Call {n} friends or family',[1,2,3,4,6]],['Speak in front of others for {n} minutes',[1,2,5,10,20]]],
+ int:[['Read {n} pages',[5,15,30,60,120]],['Study for {n} minutes',[15,30,60,120,240]],['Learn {n} new words',[3,5,10,20,40]],['Solve {n} maths problems',[3,8,15,30,60]]],
+ dis:[['No phone for {n} minutes',[15,30,60,120,240]],['Finish {n} tasks you have been avoiding',[1,1,2,3,5]],['Take a cold shower for {n} seconds',[15,30,60,90,180]],['Wake up {n} minutes earlier than usual',[10,20,30,60,90]]],
+ cre:[['Draw or sketch for {n} minutes',[5,10,20,45,90]],['Write {n} words',[50,100,250,500,1000]],['Create something new for {n} minutes',[10,20,40,80,150]],['Take {n} photos that tell a story',[3,5,10,20,30]]],
+ wea:[['Work on your side project for {n} minutes',[15,30,60,120,240]],['Read about money for {n} minutes',[10,20,40,60,120]],['Review {n} of your expenses',[3,5,10,20,40]],['Learn {n} investing terms',[2,4,7,12,20]]]};
+const need=l=>150+(l-1)*100;
+const lvl=xp=>{let l=1;while(xp>=need(l)){xp-=need(l);l++}return{l,cur:xp,max:need(l)}};
+const day=(o=0)=>{const d=new Date();d.setDate(d.getDate()+o);return d.toISOString().slice(0,10)};
+const RK=[[1,'Novice'],[3,'Apprentice'],[6,'Adventurer'],[10,'Champion'],[15,'Grandmaster'],[22,'Legend']];
+const rank=l=>RK.filter(r=>l>=r[0]).pop()[1];
+const hap=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+let S={xp:{},cnt:{},h:[],quests:[],streak:0,last:'',done:0,seeded:0,rolls:0,rar:[0,0,0,0,0]};
+try{const r=localStorage.getItem('skillion_px');if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+if(!S.seeded){S.seeded=1;S.quests=[{id:1,t:'Walk for 15 minutes',a:'hea',x:12,r:0},{id:2,t:'Read 15 pages',a:'int',x:30,r:1},{id:3,t:'No phone for 60 minutes',a:'dis',x:75,r:2}]}
+const save=()=>{try{localStorage.setItem('skillion_px',JSON.stringify(S))}catch(e){}};
+const ax=k=>S.xp[k]||0,tot=()=>A.reduce((a,x)=>a+ax(x.k),0),at=k=>A.find(x=>x.k===k);
+const $=s=>document.querySelector(s),full=()=>S.quests.length>=MAX;
+let tab='quests',isNew=0;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2000)}
+function fx(el,txt){
+ const r=el?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0},cx=r.left+r.width/2,cy=r.top+r.height/2;
+ const f=document.createElement('div');f.className='fl';f.textContent=txt;f.style.left=(cx-40)+'px';f.style.top=cy+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1000);
+ for(let i=0;i<16;i++){const s=document.createElement('span'),an=Math.PI*2*i/16,d=40+Math.random()*50;s.className='sp';s.style.left=cx+'px';s.style.top=cy+'px';s.style.setProperty('--x',Math.cos(an)*d+'px');s.style.setProperty('--y',Math.sin(an)*d+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),700)}
+}
+function levelUp(a,b){hap([60,40,60,40,160]);$('#lvc').innerHTML=`<h1>LEVEL UP!</h1><p>${a}</p><p style="color:var(--dim)">${b}</p>`;$('#lv').classList.add('show');clearTimeout(levelUp.h);levelUp.h=setTimeout(()=>$('#lv').classList.remove('show'),2800)}
+let RV=A.map(()=>.1);
+const RC={x:130,y:118,R:76};
+const rpt=(i,f)=>{const an=-Math.PI/2+i*Math.PI/3;return[RC.x+Math.cos(an)*RC.R*f,RC.y+Math.sin(an)*RC.R*f]};
+function rtarget(){const xs=A.map(a=>ax(a.k)),m=Math.max(150,...xs);return xs.map(x=>.1+.9*x/m)}
+function drawR(v){
+ const p=$('#rp'),d=$('#rd');if(!p||!d)return;
+ p.setAttribute('points',v.map((f,i)=>rpt(i,f).join(',')).join(' '));
+ const xs=A.map(a=>ax(a.k)),m=Math.max(...xs);
+ d.innerHTML=v.map((f,i)=>{const q=rpt(i,f),lead=m>0&&xs[i]===m;return `<rect x="${q[0]-(lead?6:4)}" y="${q[1]-(lead?6:4)}" width="${lead?12:8}" height="${lead?12:8}" fill="${lead?'#fff':'#ffe58a'}" stroke="#000" stroke-width="2"/>`}).join('');
+}
+function animateRadar(){
+ const to=rtarget(),from=[...RV];let n=0;clearInterval(animateRadar.h);
+ animateRadar.h=setInterval(()=>{n++;const e=n/10;RV=from.map((f,i)=>f+(to[i]-f)*e);drawR(RV);if(n>=10)clearInterval(animateRadar.h)},70);
+}
+function radar(){
+ const ring=f=>A.map((_,i)=>rpt(i,f).join(',')).join(' '),xs=A.map(a=>ax(a.k)),t=tot(),m=Math.max(...xs);
+ return `<svg viewBox="0 0 260 236" style="width:100%;max-width:290px;display:block;margin:4px auto 0;shape-rendering:crispEdges" role="img" aria-label="Attribute hexagon showing where your XP is concentrated">${[.33,.66,1].map(f=>`<polygon points="${ring(f)}" fill="none" stroke="#3a2f12" stroke-width="3"/>`).join('')}${A.map((_,i)=>`<line x1="${RC.x}" y1="${RC.y}" x2="${rpt(i,1)[0]}" y2="${rpt(i,1)[1]}" stroke="#3a2f12" stroke-width="2"/>`).join('')}<polygon id="rp" points="${RV.map((f,i)=>rpt(i,f).join(',')).join(' ')}" fill="#f0b92c66" stroke="#f0b92c" stroke-width="4" stroke-linejoin="miter"/><g id="rd"></g>${A.map((a,i)=>{const p=rpt(i,1.36),lead=m>0&&xs[i]===m;return `<text x="${p[0]}" y="${p[1]}" fill="${lead?'#fff':'#ffe58a'}" font-size="8" font-family="Press Start 2P,monospace" text-anchor="middle" dominant-baseline="middle">${a.n.slice(0,3).toUpperCase()} ${t?Math.round(xs[i]/t*100):0}%</text>`}).join('')}</svg>`;
+}
+function hero(){
+ const T=lvl(tot());
+ return `<div class="pan hero"><div class="rk">${rank(T.l).toUpperCase()}</div><h1>LEVEL ${T.l}</h1><div class="xb" role="progressbar" aria-valuenow="${T.cur}" aria-valuemax="${T.max}"><i style="width:${T.cur/T.max*100}%"></i></div><small>${T.cur} / ${T.max} XP</small>${radar()}<div class="chips"><span class="chip">Streak ${S.streak}d</span><span class="chip">Quests ${S.done}</span><span class="chip">${tot()} XP</span></div></div>`;
+}
+function stats(){
+ const bd={};S.h.forEach(e=>bd[e.d]=(bd[e.d]||0)+e.x);
+ const gr={};S.h.filter(e=>e.d>=day(-6)).forEach(e=>gr[e.a]=(gr[e.a]||0)+e.x);
+ const lv=A.map(a=>({a,l:lvl(ax(a.k)),xp:ax(a.k),c:S.cnt[a.k]||0,g:gr[a.k]||0})),has=tot()>0;
+ const so=f=>[...lv].sort(f)[0],best=so((a,b)=>b.xp-a.xp),weak=so((a,b)=>a.xp-b.xp),fast=so((a,b)=>b.g-a.g),fav=so((a,b)=>b.c-a.c);
+ const bdv=Object.entries(bd).sort((a,b)=>b[1]-a[1])[0],days=Object.keys(bd).length,avg=days?Math.round(tot()/days):0;
+ const H=(lb,o,sub)=>`<div class="pan hl"><div class="lb">${lb}</div><div class="v">${has&&o?ico(o.a.k,24)+o.a.n.toUpperCase():'---'}</div><div class="s">${has&&o?sub:'Complete quests to unlock'}</div></div>`;
+ let h=`<div class="sec"><h2>HALL OF RECORDS</h2></div><div class="grid">`+H('Best attribute',best,`Lv ${best.l.l}, ${best.xp} XP`)+H('Fastest growing',fast.g?fast:null,`+${fast.g} XP this week`)+H('Favourite',fav.c?fav:null,`${fav.c} quests done`)+H('Needs attention',weak,`Lv ${weak.l.l}, ${weak.xp} XP`)+`</div>`;
+ h+=`<div class="grid" style="margin-top:12px"><div class="pan hl"><div class="lb">Best day</div><div class="v">${bdv?bdv[1]+' XP':'---'}</div><div class="s">${bdv?bdv[0]:''}</div></div><div class="pan hl"><div class="lb">Avg per active day</div><div class="v">${avg} XP</div><div class="s">${days} active days</div></div></div>`;
+ h+=`<div class="pan"><div class="lb" style="color:var(--dim)">Quests claimed by rarity</div><div style="display:flex;justify-content:space-between;margin-top:8px">${TIER.map((t,i)=>`<div style="text-align:center;color:var(${TC[i]})"><div class="px" style="font-size:14px">${(S.rar||[])[i]||0}</div><div style="font-size:16px">${t.slice(0,4)}</div></div>`).join('')}</div></div>`;
+ const wk=[...Array(7)].map((_,i)=>bd[day(i-6)]||0),mx=Math.max(20,...wk);
+ h+=`<div class="pan"><div class="px" style="font-size:9px;color:var(--gold)">XP LAST 7 DAYS</div><div style="display:flex;gap:6px;align-items:flex-end;height:100px;margin-top:12px">${wk.map((v,i)=>`<div style="flex:1;text-align:center;color:var(--dim)"><div style="background:var(--gold);height:${Math.max(4,Math.round(v/mx*72/4)*4)}px;opacity:${v?1:.3};box-shadow:inset 0 4px 0 #ffe58a88"></div>${['S','M','T','W','T','F','S'][new Date(day(i-6)+'T12:00').getDay()]}</div>`).join('')}</div></div>`;
+ h+=`<div class="sec"><h2>ACHIEVEMENTS</h2></div>`;
+ [['hea','First blood','Complete 1 quest',S.done>=1],['dis','On fire','Reach a 3-day streak',S.streak>=3],['wea','Gambler','Roll 5 random quests',S.rolls>=5],['cre','Legend hunter','Claim a Legendary quest',(S.rar||[])[4]>0],['int','Specialist','Reach level 3 in an attribute',lv.some(x=>x.l.l>=3)],['cha','Balanced','Level 2 in every attribute',lv.every(x=>x.l.l>=2)],['swd','Skillionaire','Earn 1,000 total XP',tot()>=1000]]
+ .forEach(b=>h+=`<div class="pan bd ${b[3]?'on':''}">${ico(b[0],36)}<div><b>${b[1]}</b><br><small>${b[2]}</small></div></div>`);
+ return h+`<div class="row"><button class="btn o" onclick="if(confirm('Reset all progress?')){S={xp:{},cnt:{},h:[],quests:[],streak:0,last:'',done:0,seeded:1,rolls:0,rar:[0,0,0,0,0]};save();render()}">RESET PROGRESS</button></div>`;
+}
+function render(){
+ let h='';
+ if(tab==='quests'){
+  const f=full();
+  h=hero()+`<div class="sec"><h2>QUESTS ${S.quests.length}/${MAX}</h2><div class="btns"><button class="btn o ${f?'dis':''}" id="rb" onclick="roll()">${ico('wea',14)}ROLL</button><button class="btn ${f?'dis':''}" onclick="openQ()">+ NEW</button></div></div>`;
+  S.quests.forEach(q=>{const a=at(q.a);
+   h+=`<div class="pan q ${isNew===q.id?'new':''}" data-r="${q.r}" data-id="${q.id}" style="--c:var(${TC[q.r]})"><div class="slotic">${ico(q.a,28)}</div><div class="t">${q.t}<small>${a.n}<span class="rar">${TIER[q.r].toUpperCase()}</span></small><span class="xp">+${q.x} XP</span></div><button class="claim btn" aria-label="Claim quest reward" onclick="done(this,${q.id})">CLAIM</button></div>`});
+  for(let i=S.quests.length;i<MAX;i++)h+=`<div class="empty">EMPTY SLOT<br>Roll or add a quest</div>`;
+  isNew=0;
+ }
+ if(tab==='attrs'){h=`<div class="sec"><h2>ATTRIBUTES</h2></div>`;
+  A.forEach(a=>{const L=lvl(ax(a.k));h+=`<div class="pan at"><div class="slotic" style="--c:var(--gd)">${ico(a.k,32)}</div><div class="m"><div class="top"><span>${a.n}</span><span class="px">LV ${L.l}</span></div><div class="bar"><i style="width:${L.cur/L.max*100}%"></i></div><small>${L.cur}/${L.max} XP, ${S.cnt[a.k]||0} quests</small></div></div>`})}
+ if(tab==='stats')h=stats();
+ $('#app').innerHTML=h;
+ if(tab==='quests'){drawR(RV);animateRadar()}
+ $('#nav').innerHTML=[['quests','swd','QUESTS'],['attrs','dis','STATS'],['stats','cre','RECORDS']].map(n=>`<button class="${tab===n[0]?'on':''}" onclick="hap(8);tab='${n[0]}';render();scrollTo(0,0)">${ico(n[1],24)}${n[2]}</button>`).join('');
+}
+function blocked(){hap([40,60,40]);toast('QUEST LOG FULL. Claim your 3 quests first.');const e=$('#app');e.classList.add('shake');setTimeout(()=>e.classList.remove('shake'),350)}
+function done(btn,id){
+ const i=S.quests.findIndex(x=>x.id===id);if(i<0)return;
+ const q=S.quests[i],el=btn.closest('.q');if(el.classList.contains('out'))return;
+ const bl=lvl(ax(q.a)).l,bt=lvl(tot()).l,t=day();
+ S.quests.splice(i,1);S.xp[q.a]=ax(q.a)+q.x;S.cnt[q.a]=(S.cnt[q.a]||0)+1;S.done++;S.rar[q.r]=(S.rar[q.r]||0)+1;S.h.push({d:t,a:q.a,x:q.x});
+ if(S.last!==t){S.streak=S.last===day(-1)?S.streak+1:1;S.last=t}
+ save();el.classList.add('out');fx(btn,'+'+q.x+' XP');
+ hap(q.r>=3?[30,30,30,30,90]:q.r>=1?[30,40,50]:25);
+ setTimeout(()=>{render();
+  const al=lvl(ax(q.a)).l;
+  if(al>bl)levelUp(`${at(q.a).n} reached level ${al}`,'Your power grows');
+  else if(lvl(tot()).l>bt)levelUp(`You are now a ${rank(lvl(tot()).l)}`,`Character level ${lvl(tot()).l}`);
+ },550);
+}
+function roll(){
+ if(full())return blocked();
+ const b=$('#rb');if(b.classList.contains('rolling'))return;b.classList.add('rolling');hap([15,25,15,25,15]);
+ setTimeout(()=>{
+  let r=Math.random()*100,ti=0;for(let i=0;i<5;i++){if(r<WT[i]){ti=i;break}r-=WT[i]}
+  const a=A[Math.floor(Math.random()*6)],p=P[a.k][Math.floor(Math.random()*4)];
+  const x=XR[ti][0]+Math.floor(Math.random()*(XR[ti][1]-XR[ti][0]+1)),id=Date.now();
+  S.quests.push({id,t:p[0].replace('{n}',p[1][ti]),a:a.k,x,r:ti,ro:1});S.rolls++;save();isNew=id;render();
+  hap(ti>=3?[40,30,40,30,120]:ti>=1?[40,40]:30);toast(`${TIER[ti].toUpperCase()} QUEST, ${x} XP`);
+ },700);
+}
+function openQ(){
+ if(full())return blocked();
+ $('#dlg').innerHTML=`<h3 class="px" style="color:var(--gold);font-size:12px;margin:0">NEW QUEST</h3><label for="qt">QUEST</label><input id="qt" maxlength="50" placeholder="e.g. Practise guitar for 15 min"><label for="qa">ATTRIBUTE</label><select id="qa">${A.map(a=>`<option value="${a.k}">${a.n}</option>`).join('')}</select><label for="qx">DIFFICULTY</label><select id="qx">${TIER.map((t,i)=>`<option value="${i}">${t}: ${XF[i]} XP</option>`).join('')}</select><div class="row"><button class="btn o" onclick="dlg.close()">CANCEL</button><button class="btn" onclick="addQ()">ADD</button></div>`;
+ $('#dlg').showModal();
+}
+function addQ(){
+ const t=$('#qt').value.trim();if(!t){hap([40,60,40]);$('#dlg').classList.add('shake');setTimeout(()=>$('#dlg').classList.remove('shake'),350);return toast('DESCRIBE YOUR QUEST')}
+ if(full()){$('#dlg').close();return blocked()}
+ const id=Date.now(),r=+$('#qx').value;S.quests.push({id,t,a:$('#qa').value,x:XF[r],r});save();hap(30);$('#dlg').close();isNew=id;render();
+}
+render();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
